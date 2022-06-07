@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker'
+import Mail from '@ioc:Adonis/Addons/Mail'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import { User } from 'App/Models'
 import { StoreValidator } from 'App/Validators/User/Register'
@@ -16,7 +17,12 @@ export default class UserRegisterController {
 
     const link = `${redirectUrl.replace(/\/$/, '')}/${key}`
 
-    // TODO: Configurar envio de email
+    await Mail.send((message) => {
+      message.to(email)
+      message.from('contato@facebook.com', 'Facebook')
+      message.subject('Confirmação de cadastro')
+      message.htmlView('emails/register', { link })
+    })
   }
 
   public async show({}: HttpContextContract) {}
