@@ -1,6 +1,6 @@
 import Hash from '@ioc:Adonis/Core/Hash'
-import { BaseModel, beforeSave, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
-import { UserKey } from 'App/Models'
+import { BaseModel, beforeSave, column, HasMany, hasMany, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
+import { File, UserKey } from 'App/Models'
 import { DateTime } from 'luxon'
 
 export default class User extends BaseModel {
@@ -37,4 +37,10 @@ export default class User extends BaseModel {
 
   @hasMany(() => UserKey)
   public keys: HasMany<typeof UserKey>
+
+  @hasOne(() => File, {
+    foreignKey: 'ownerId',
+    onQuery: (query) => query.where('fileCategory', 'avatar')
+  })
+  public avatar: HasOne<typeof File>
 }
