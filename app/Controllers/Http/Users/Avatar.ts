@@ -1,7 +1,8 @@
 import Application from '@ioc:Adonis/Core/Application'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { UpdateValidator } from 'App/Validators/User/Avatar'
 import Database from '@ioc:Adonis/Lucid/Database'
+import { UpdateValidator } from 'App/Validators/User/Avatar'
+import fs from 'fs'
 
 export default class UserAvatarController {
   public async update({ request, auth }: HttpContextContract) {
@@ -27,5 +28,17 @@ export default class UserAvatarController {
     })
 
     return response
+  }
+
+  public async destroy({ auth }: HttpContextContract) {
+    await Database.transaction(async (trx) => {
+      const user = auth.user!.useTransaction(trx)
+
+      const avatar = await user.related('avatar').query().where('file_category', 'avatar').firstOrFail()
+
+      await avatar.delete()
+
+      fs.unlinkSync(Application.tmpPath('uploads', avatar.fileName))
+    })
   }
 }
