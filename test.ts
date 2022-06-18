@@ -13,6 +13,8 @@
 */
 
 process.env.NODE_ENV = 'test'
+process.env.MYSQL_DB_NAME = 'testing'
+process.env.LOG_LEVEL = 'fatal'
 
 import 'reflect-metadata'
 import sourceMapSupport from 'source-map-support'
@@ -36,9 +38,9 @@ kernel
       ...{
         importer: (filePath) => import(filePath),
         setup: app.concat(runnerHooks.setup),
-        teardown: runnerHooks.teardown,
+        teardown: runnerHooks.teardown
       },
-      cwd: kernel.application.appRoot,
+      cwd: kernel.application.appRoot
     })
 
     run()
