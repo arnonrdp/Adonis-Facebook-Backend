@@ -1,22 +1,36 @@
 # Facebook API Clone
 
 ## Configurações
-```bash
-# Biblioteca para conexão com banco de dados:
-npm install @adonisjs/lucid
 
-# Comando para configurar o banco de dados:
-node ace configure @adonisjs/lucid
+Crie um arquivo `.env` e defina as variáveis de ambiente conforme o arquivo [`.env.example`](.env.example).
 
-# Biblioteca de autenticação:
-npm install @adonisjs/auth
+Não esqueça de atribuir os valores de MYSQL e SMTP conforme necessário.
 
-# Comando para configurar o autenticador:
-node ace configure @adonisjs/auth
+> No meu caso utilizei as seguinte opções gratuitas:
+> - **remotemysql.com** como Banco de Dados;
+> - **smtp.aol.com** como servidor de SMTP.
 
-# Validação de dados para autenticação:
-node ace make:validator Auth/StoreValidator
+Após conectado ao banco de dados, execute o comando para criar as tabelas:
 
-# Criação do Controller de autenticação:
-node ace make:controller Auth/Main -r
+```sh
+node ace migration:run
 ```
+
+## Inicialização
+
+Após configurado execute:
+
+```sh
+node ace serve --watch
+```
+
+Com isso já deverá ser possível ver o projeto em execução:
+
+![Server Running](public/main.png)
+
+Para fazer o build do projeto, execute:
+
+```sh
+node ace build --production
+```
+
